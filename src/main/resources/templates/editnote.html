@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+        <title>Note project</title>
+
+        <style type="text/css">
+            body {
+                padding-top: 60px;
+                padding-bottom: 40px;
+            }
+
+        </style>
+
+    </head>
+    <body>
+
+        <form id="noteEditForm" action="/savenote" method="POST">
+            <input type="hidden" name="id" th:value="${note.id}"></input>
+            <input name="title" th:value="${note.title}"></input>
+            <input name="description" th:value="${note.description}"></input>
+            <button id="saveNoteButton">Save</button>
+        </form>
+        <script>
+            $(function () {
+                $("#saveNoteButton").click(function () {
+                    $.ajax({
+                        method: "POST",
+                        url: "/savenote",
+                        data: {id:$("#noteEditForm [name=id]").val() ?$("#noteEditForm [name=id]").val() :0,
+                                title:$("#noteEditForm [name=title]").val(),
+                                description:$("#noteEditForm [name=description]").val()}
+                    }).done(function (response, status, xhr) {
+                        console.log(response);
+                        $("#noteEditForm").hide();
+                        location.href="/";
+                    });
+                    return false;
+                })
+            })
+        </script>
+    </body>
+</html>

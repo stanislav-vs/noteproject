@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <script type="text/javascript" src="../../js/jquery-2.1.1.js"></script> 
+    <script type="text/javascript" src="../../js/ajax.js"></script> 
+    <title>Note project</title>
+
+    <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    
+
+    <div class="row-fluid">
+        <div class="span9">
+
+            
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Title</th>
+                    <th>Description First</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="item : ${list}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.title}"></td>
+                    <td th:text="${item.description}"></td>
+                    <td><button type="button"><a th:href="@{/deletenote(id=${item.id})}">Remove</a></button></td>
+                    <td><button type="button"><a th:href="@{/note/{id}(id=${item.id})}">Edit</a></button></td>
+                </tr>
+                
+                </tbody>
+            </table>
+            <div><button id="createNoteButton" type="button">Add</button></div>
+            <div id="addNewNote"></div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
