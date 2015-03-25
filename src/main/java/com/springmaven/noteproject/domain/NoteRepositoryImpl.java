@@ -36,17 +36,18 @@ public class NoteRepositoryImpl implements NoteRepository {
 
     @Override
     public NoteEntity save(NoteEntity note) {
-        if (note.getId() == 0) {
+        if (note.getId() == null) {
             SimpleJdbcInsert insert = new SimpleJdbcInsert(jdbc).withTableName("notes").usingGeneratedKeyColumns("id");
             HashMap parameters = new HashMap();
             parameters.put("title", note.getTitle());
             parameters.put("description", note.getDescription());
+            parameters.put("picture", note.getPicture());
             final Number key = insert.executeAndReturnKey(parameters);
             final long pk = key.longValue();
             note.setId(pk);
         } else {
-            String q = "UPDATE notes SET title=?, description=? WHERE id=?";
-            jdbc.update(q, new Object[]{note.getTitle(), note.getDescription(), note.getId()});
+            String q = "UPDATE notes SET title=?, description=?, picture=? WHERE id=?";
+            jdbc.update(q, new Object[]{note.getTitle(), note.getDescription(), note.getPicture(), note.getId()});
         }
         return note;
     }

@@ -6,6 +6,7 @@
 package com.springmaven.noteproject.mapper;
 
 import com.springmaven.noteproject.domain.NoteEntity;
+import java.awt.Image;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
@@ -23,6 +24,7 @@ public class NoteMapper implements RowMapper<NoteEntity> {
         note.setId(Long.valueOf(rs.getInt("id")));
         note.setTitle(rs.getString("title"));
         note.setDescription(rs.getString("description"));
+        note.setPicture(rs.getString("picture"));
         return note;
          
     }

@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<div xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+        <h1 th:inline="text">Hello user!</h1>
+        <form th:action="@{/logout}" method="POST">
+            <button type="submit" value="Sign Out">Sign Out</button>
+        </form>
+</div>

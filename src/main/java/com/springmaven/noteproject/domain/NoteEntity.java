@@ -9,7 +9,9 @@ package com.springmaven.noteproject.domain;
  *
  * @author stasiuk-ps
  */
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
+import org.springframework.web.multipart.MultipartFile;
 
 public class NoteEntity implements Serializable {
 
@@ -18,7 +20,12 @@ public class NoteEntity implements Serializable {
     private String title;
 
     private String description;
-
+    
+    private String picture;
+    
+    @JsonIgnore
+    private MultipartFile pictureFile;
+    
     // ... additional members, often include @OneToMany mappings
 
     public NoteEntity() {
@@ -53,6 +60,22 @@ public class NoteEntity implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getPicture() {
+        return picture;
+    }
+
+    public void setPicture(String picture) {
+        this.picture = picture;
+    }
+
+    public MultipartFile getPictureFile() {
+        return pictureFile;
+    }
+
+    public void setPictureFile(MultipartFile pictureFile) {
+        this.pictureFile = pictureFile;
     }
 
     
