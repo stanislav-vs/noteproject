@@ -4,37 +4,28 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <script type="text/javascript" src="../../js/jquery-2.1.1.js"></script> 
-        <script type="text/javascript" src="../../js/action.js"></script>
         <script src="http://malsup.github.com/jquery.form.js"></script> 
+        <script type="text/javascript" src="../../js/action.js"></script>
+        <script src="../../angularjs/angular.js"></script>
+        <script src="../../js/bootstrap.min.js"></script>
+        <link href="../../css/bootstrap-theme.css" rel="stylesheet" />
+        <link href="../../css/bootstrap.min.css" rel="stylesheet" />
+        <script src="../../js/controllers.js"></script>
+
         <title>Note project</title>
-
-        <style type="text/css">
-            body {
-                padding-top: 60px;
-                padding-bottom: 40px;
-            }
-
-        </style>
     </head>
-    <body>
+
+    <body ng-app="noteList">
 
         <div class="container-fluid">
-
-            <div th:if="${param.error}">
-                Invalid username and password.
-            </div>
-            <div th:if="${param.logout}">
-                You have been logged out.
-            </div>
             <form action="/login" method="POST">
                 <div>User Name : <input type="text" name="username"/></div>
                 <div>Password: <input type="password" name="password"/></div>
-                <button id="submited" type="submit" value="Sign In">Sign In</button>
+                <button type="submit" value="Sign In">Sign In</button>
             </form>
-            <div class="signing"></div>
         </div>
 
-        <div class="container-fluid">
+        <div class="container-fluid" ng-controller="NoteListController">
 
             <div class="row-fluid">
                 <div class="span9">
@@ -48,13 +39,13 @@
                             </tr>
                         </thead>
                         <tbody id="dataList">
-                            <tr th:each="item : ${list}">
-                                <td th:text="${item.id}"></td>
-                                <td th:text="${item.title}"></td>
-                                <td th:text="${item.description}"></td>
-                                <td><img th:src="@{../uploads/{picture}(picture=${item.picture})}" alt="image" height="42" width="42" /></td>
-                                <td><button class="deleteNoteButton" type="button" th:attr="data-itemid=${item.id}">Remove</button></td>
-                                <td><button class="editNoteButton" type="button" th:attr="data-itemid=${item.id}">Edit</button></td>
+                            <tr ng-repeat="item in items">
+                                <td>{{item.id}}</td>
+                                <td>{{item.title}}</td>
+                                <td>{{item.description}}</td>
+                                <td><img src='/uploads/{{item.picture}}' alt="image" height="42" width="42" /></td>
+                                <td><button  type="button" data-itemid='{{item.id}}' ng-click="deleteItem()">Remove</button></td>
+                                <td><button type="button" ng-click="editItem(item.id)">Edit</button></td>
                             </tr>
 
                         </tbody>
@@ -66,19 +57,7 @@
             </div>
         </div>
         <script>//<![CDATA[
-
             $(function () {
-                
-
-                $("#submited").click(function () {
-                    $.ajax({
-                        url: "/login"
-                    }).done(function (response, status, xhr) {
-                        console.log(response);
-                        $(".signing").html(response);
-
-                    });
-                });
                 
                 $("#createNoteButton").click(function () {
                     $.ajax({
@@ -90,35 +69,35 @@
                     });
                 });
 
-                $("#dataList").on("click", ".editNoteButton", function (item) {
-                    $.ajax({
-                        url: "/note/" + $(this).data("itemid"),
-                    }).done(function (response, xhr) {
-                        $("#addNewNote").html(response);
-                    });
+//                $("#dataList").on("click", ".editNoteButton", function (item) {
+//                    $.ajax({
+//                        url: "/note/" + $(this).data("itemid"),
+//                    }).done(function (response, xhr) {
+//                        $("#addNewNote").html(response);
+//                    });
+//
+//
+//
+//                });
 
-
-
-                });
-
-                $("#noteList").on("click", ".deleteNoteButton", function (index, item) {
-                    $.ajax({
-                        url: '/note/delete',
-                        type: "POST",
-                        data: {id: $(this).data("itemid")}
-                    }).done(function () {
-                        $.ajax({
-                            url: '/note/list',
-                            type: "POST"
-                        }).done(function (result) {
-                            $("#dataList tr").remove();
-
-                            getList(result);
-                        });
-
-
-                    });
-                });
+//                $("#noteList").on("click", ".deleteNoteButton", function (index, item) {
+//                    $.ajax({
+//                        url: '/note/delete',
+//                        type: "POST",
+//                        data: {id: $(this).data("itemid")}
+//                    }).done(function () {
+//                        $.ajax({
+//                            url: '/note/list',
+//                            type: "POST"
+//                        }).done(function (result) {
+//                            $("#dataList tr").remove();
+//
+//                            getList(result);
+//                        });
+//
+//
+//                    });
+//                });
 
             });
             //]]></script>
