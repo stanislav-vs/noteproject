@@ -30,11 +30,27 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  * @author stasiuk-ps
  */
  
- 
 @Controller 
 public class IndexController { 
-    protected final Logger log = LoggerFactory.getLogger(getClass()); 
  
+    @RequestMapping(value="/login.html", method = RequestMethod.POST)
+    public String loginPage(Model model){
+        return "login.html";
+    }
+    
+    @RequestMapping(value="/logout.html", method = RequestMethod.POST)
+    public String logoutPage(Model model){
+        return "login.html";
+    }
+    
+    @RequestMapping("/login-error.html")
+    public String loginError(Model model) {
+      model.addAttribute("loginError", true);
+      return "login.html";
+    }
+  
+    protected final Logger log = LoggerFactory.getLogger(getClass()); 
+    
     @Autowired 
     private NoteRepository noteRepository; 
  
@@ -42,17 +58,18 @@ public class IndexController {
     public String home(Model model) {
         List<NoteEntity> noteList = noteRepository.findAll();
         model.addAttribute("list", noteList);
-        return "home"; 
+        return "home";
     }
     
    
     
      
-    @RequestMapping("/note/{id}")
-    public String editNote(Model model, @PathVariable("id") long id) {
+    @RequestMapping(value="/note/edit", method = RequestMethod.POST)
+    @ResponseBody
+    public String editNote(@RequestParam("id") long id) {
         NoteEntity oneNote = noteRepository.findById(id);
-        model.addAttribute("note", oneNote);
-        return "editnote";
+        this.noteRepository.save(oneNote);
+        return "ok";
     }
     
     @RequestMapping("/note/create")
@@ -63,7 +80,7 @@ public class IndexController {
         return "createnote";
     }
     
-    @RequestMapping(value="/savenote", method = RequestMethod.POST)
+    @RequestMapping(value="/note/save", method = RequestMethod.POST)
     public @ResponseBody NoteEntity saveNote (NoteEntity note, MultipartHttpServletRequest request, HttpServletResponse response) {
         
         if (!note.getPictureFile().isEmpty()) {

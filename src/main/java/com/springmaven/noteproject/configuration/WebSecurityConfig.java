@@ -19,13 +19,14 @@ import org.springframework.security.config.annotation.web.servlet.configuration.
 @Configuration
 @EnableWebMvcSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+        
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
             .csrf().disable()
             
             .authorizeRequests()
-                .antMatchers("/", "/home", "/uploads/**").permitAll()
+                .antMatchers("/", "/home", "/uploads/**", "/note/list", "/angularjs/**", "/css/**", "/js/**").permitAll()
                 .antMatchers("/**").hasRole("ADMIN")
                 .antMatchers("/home").hasRole("USER")
                 .anyRequest().authenticated()
