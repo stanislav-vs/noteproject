@@ -24,4 +24,4 @@ app.directive('fileModel', ['$parse', function ($parse) {
 //            console.log(scope);
         }
     };
-}]);
+}])

@@ -38,4 +38,4 @@ app.service('fileUpload', ['$http', function ($http) {
             headers: {'Content-Type': undefined}
             });
     };
-}]);
+}])

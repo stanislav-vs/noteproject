@@ -37,16 +37,20 @@
                     <div th:switch="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${false}">
                         <span th:case="${false}">User is not logged, please Click
                             <a th:href="@{/login}" type="button" class="btn btn-primary">Button</a> to sign.</span>
-                        <span th:case="${true}">Logged ${pageContext.request.userPrincipal.name}</span>
-                    </div>
-                    <div th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${true}">       
-                        <form th:action="@{/logout}" method="post">
-                            <input type="submit" value="Sign Out"/>
-                        </form>
+                        <div th:case="${true}">
+                            <span>Welcome</span>
+                            <div th:text="${#authentication.name}">
+                                The value of the "name" property of the authentication object should appear here.
+                            </div>
+                            <form th:action="@{/logout}" method="post">
+                                <input type="submit" value="Sign Out"/>
+                            </form>
+                            
+                        </div>
                     </div>
                 </div>
                 <div class="col-sm-2 center">
-                    <div th:if="${#authentication}? ${#authorization.expression('isAuthenticated()')} : ${true}">
+                    <div sec:authorize="isAuthenticated()">
                         <button type="button" class="btn btn-info" ng-click="openDialog()" data-toggle="modal" data-target="#myModal">Add notation</button>
                     </div>
                 </div>
