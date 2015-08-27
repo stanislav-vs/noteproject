@@ -13,13 +13,9 @@ import java.io.FileOutputStream;
 import java.util.List;
 import java.util.UUID;
 import javax.servlet.http.HttpServletResponse;
-import org.slf4j.Logger; 
-import org.slf4j.LoggerFactory; 
 import org.springframework.beans.factory.annotation.Autowired; 
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping; 
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam; 
@@ -33,24 +29,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 @Controller 
 public class IndexController { 
  
-    @RequestMapping(value="/login.html", method = RequestMethod.POST)
-    public String loginPage(Model model){
-        return "login.html";
-    }
-    
-    @RequestMapping(value="/logout.html", method = RequestMethod.POST)
-    public String logoutPage(Model model){
-        return "login.html";
-    }
-    
-    @RequestMapping("/login-error.html")
-    public String loginError(Model model) {
-      model.addAttribute("loginError", true);
-      return "login.html";
-    }
-  
-    protected final Logger log = LoggerFactory.getLogger(getClass()); 
-    
     @Autowired 
     private NoteRepository noteRepository; 
  
@@ -72,18 +50,11 @@ public class IndexController {
         return "ok";
     }
     
-    @RequestMapping("/note/create")
-    public String createNote(Model model) {
-        NoteEntity newNote = new NoteEntity();
         
-        model.addAttribute("note", newNote);
-        return "createnote";
-    }
-    
     @RequestMapping(value="/note/save", method = RequestMethod.POST)
     public @ResponseBody NoteEntity saveNote (NoteEntity note, MultipartHttpServletRequest request, HttpServletResponse response) {
         
-        if (!note.getPictureFile().isEmpty()) {
+        if (note.getPictureFile()!=null && !note.getPictureFile().isEmpty()) {
             
             try {
                 String fileName = UUID.randomUUID().toString();
@@ -105,6 +76,9 @@ public class IndexController {
             } catch (Exception e) {
                 return null;
             }
+        } else if (note.getId()!=null) {
+            NoteEntity oldNote = noteRepository.findById(note.getId());
+            note.setPicture(oldNote.getPicture());
         }
         
         return this.noteRepository.save(note);

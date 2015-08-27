@@ -14,13 +14,10 @@ import java.io.Serializable;
 import org.springframework.web.multipart.MultipartFile;
 
 public class NoteEntity implements Serializable {
-
-    private Long id;
-
-    private String title;
-
-    private String description;
     
+    private Long id;
+    private String title;
+    private String description;
     private String picture;
     
     @JsonIgnore
@@ -32,7 +29,7 @@ public class NoteEntity implements Serializable {
         // no-args constructor required by JPA spec
         // this one is protected since it shouldn't be used directly
     }
-
+    
     public NoteEntity(String name, String description) {
         this.title = name;
         this.description = description;
