@@ -6,15 +6,6 @@
 
 app.controller('mainController', ['$scope', '$http', 'fileUpload', function ($scope, $http, fileUpload) {
                             
-    $scope.submitForm = function() {
-
-        // check to make sure the form is completely valid
-        if ($scope.loginForm.$valid) {
-            console.log('wellcome ' + $scope.user);
-             
-        }
-    };
-
     var getItems = function () {
         $http.post('/note/list')
                 .success(function (data) {

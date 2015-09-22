@@ -39,9 +39,7 @@ public class IndexController {
         return "home";
     }
     
-   
-    
-     
+         
     @RequestMapping(value="/note/edit", method = RequestMethod.POST)
     @ResponseBody
     public String editNote(@RequestParam("id") long id) {

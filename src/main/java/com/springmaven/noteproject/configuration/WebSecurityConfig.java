@@ -5,6 +5,7 @@
  */
 package com.springmaven.noteproject.configuration;
 
+import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -27,7 +28,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             
             .authorizeRequests()
-                .antMatchers("/", "/home", "/uploads/**", "/note/save", "/note/list", "/angularjs/**", "/css/**", "/js/**").permitAll()
+                .antMatchers("/", "/home", "/registration", "/uploads/**", "/note/save", "/note/list", "/angularjs/**", "/css/**", "/js/**", "/img/**").permitAll()
                 .antMatchers("/**").hasRole("ADMIN")
                 .antMatchers("/home").hasRole("USER")
                 .anyRequest().authenticated()
@@ -46,19 +47,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
             .csrf().disable();
     }
+    
+    @Autowired
+    DataSource dataSource;
 
     @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .inMemoryAuthentication()
-                .withUser("admin")
-                .password("password")
-                .roles("ADMIN")
-        
-                .and()
-                .withUser("user")
-                .password("password")
-                .roles("USER");
+    public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
+		
+	  auth.jdbcAuthentication().dataSource(dataSource)
+		.usersByUsernameQuery(
+			"SELECT username,password,'true' as enabled FROM users WHERE username = ?")
+		.authoritiesByUsernameQuery(
+			"SELECT username, authority as authority FROM authorities WHERE username=?");
     }
 }
     
