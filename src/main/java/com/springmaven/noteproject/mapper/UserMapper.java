@@ -5,10 +5,14 @@
  */
 package com.springmaven.noteproject.mapper;
 
-import com.springmaven.noteproject.domain.UserDto;
-import com.springmaven.noteproject.domain.Users;
+import com.springmaven.noteproject.dao.RoleDao;
+import com.springmaven.noteproject.domain.model.Role;
+import com.springmaven.noteproject.domain.model.User;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Set;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 
 
@@ -16,21 +20,19 @@ import org.springframework.jdbc.core.RowMapper;
  *
  * @author stasiuk-ps
  */
-public class UserMapper implements RowMapper<Users> {
+public class UserMapper implements RowMapper<User> {
     
-   
-
     @Override
-    public Users mapRow(ResultSet rs, int i) throws SQLException {
+    public User mapRow(ResultSet rs, int i) throws SQLException {
         
-        Users userDto = new Users();
-        
-        userDto.setUsername(rs.getString("username"));
-        userDto.setFirstName(rs.getString("firstname"));
-        userDto.setLastName(rs.getString("lastname"));
-        userDto.setEmail(rs.getString("email"));
-        userDto.setPassword(rs.getString("password"));
-        return userDto;
+        User user = new User();
+        user.setId(Long.valueOf(rs.getInt("id")));
+        user.setUsername(rs.getString("username"));
+        user.setFirstName(rs.getString("firstname"));
+        user.setLastName(rs.getString("lastname"));
+        user.setEmail(rs.getString("email"));
+        user.setPassword(rs.getString("password"));
+        return user;
         
     }
 }

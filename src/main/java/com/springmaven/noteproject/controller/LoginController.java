@@ -5,10 +5,11 @@
  */
 package com.springmaven.noteproject.controller;
 
-import com.springmaven.noteproject.domain.UserDto;
-import com.springmaven.noteproject.domain.UserRepository;
+import com.springmaven.noteproject.dao.UserDao;
+import com.springmaven.noteproject.domain.model.User;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,8 +17,9 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 /**
  *
@@ -25,11 +27,9 @@ import org.springframework.web.servlet.ModelAndView;
  */
 @Controller
 public class LoginController {
-
+    
     @Autowired
-    private AuthenticationManager authMgr;
-    @Autowired
-    private UserRepository userRepository;
+    private UserDao userDao;
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {
@@ -37,32 +37,18 @@ public class LoginController {
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.GET)
-    public String registrationPage(Model model) {
-        UserDto userDto = new UserDto();
-        model.addAttribute("user", userDto);
+    public String registrationPage(WebRequest request, Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
         return "registration";
     }
 
     @RequestMapping(value = "/registration", method = RequestMethod.POST)
-    public ModelAndView registerUserAccount(@ModelAttribute("user") UserDto userAccountData,
-            BindingResult result, WebRequest request, Errors errors) {
-
-        if (result.hasErrors()) {
-            return new ModelAndView("registration", "user", userAccountData);
-        } else {
-            return new ModelAndView("successRegister", "user", userAccountData);
-        }
-    }
-
-    private UserDto createUserAccount(UserDto userAccountData, BindingResult result) {
-        try {
-            
-//            String registered = userRepository.saveNewUser(userAccountData);
-        } catch (Exception e) {
-            // TODO Auto-generated catch block
-            return null;
-        }
-        return null;
-    }
-
+    public User registerUserAccount(@ModelAttribute("user") @Valid User user, HttpServletResponse response,
+                        BindingResult result) throws Exception{
+        
+        
+    return userDao.saveNewUser(user);
+}
+    
 }

@@ -5,8 +5,8 @@
  */
 package com.springmaven.noteproject.controller;
 
-import com.springmaven.noteproject.domain.UserRepository;
-import com.springmaven.noteproject.domain.Users;
+import com.springmaven.noteproject.dao.UserDao;
+import com.springmaven.noteproject.domain.model.User;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,19 +24,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class UserController {
  
     @Autowired 
-    private UserRepository userRepository; 
+    private UserDao userDao; 
     
     @RequestMapping("/users")
     public String getUsersPage(Model model) {
-        List<Users> usersList = userRepository.findAllUsers();
+        List<User> usersList = userDao.findAllUsers();
         model.addAttribute("list", usersList);
         return "users";
     }  
     
-    @RequestMapping(value="/list/users", method = RequestMethod.POST)
+    @RequestMapping(value="/userslist", method = RequestMethod.POST)
     @ResponseBody
-    public List<Users> usersList () {
-        List<Users> usersList = userRepository.findAllUsers();
+    public List<User> usersList () {
+        List<User> usersList = userDao.findAllUsers();
         return usersList;
     }
 }

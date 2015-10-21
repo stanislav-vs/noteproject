@@ -3,22 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.springmaven.noteproject.domain;
+package com.springmaven.noteproject.service;
 
-import java.util.List;
-
+import com.springmaven.noteproject.domain.model.Role;
 
 /**
  *
  * @author stasiuk-ps
  */
-
-public interface UserRepository {
+public interface RoleService {
     
-    Users getUser(String username);
-    
-    List<Users> findAllUsers();
-
-    Users saveNewUser(Users user);
-    
+public Role getRole(int id);
 }
+

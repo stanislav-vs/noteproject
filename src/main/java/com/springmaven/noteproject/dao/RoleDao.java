@@ -3,14 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.springmaven.noteproject.domain.authority;
+package com.springmaven.noteproject.dao;
+
+import com.springmaven.noteproject.domain.model.Role;
 
 /**
  *
  * @author stasiuk-ps
  */
-public interface AuthorityRepository {
+public interface RoleDao {
+    public Role getRole(int id);
     
-    
-
+    Role findByName(String role);
 }

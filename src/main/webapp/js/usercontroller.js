@@ -6,7 +6,7 @@
 
 app.controller('userController', ['$scope', '$http', function ($scope, $http) {
         var getUsers = function () {
-            $http.post('/list/users')
+            $http.post('/userslist')
                     .success(function (data) {
                         console.log(data);
                         $scope.users = data;
